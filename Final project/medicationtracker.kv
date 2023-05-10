@@ -1,0 +1,162 @@
+ScreenManagement:
+    LoginScreen:
+    HomeScreen:
+    AddMedicationScreen:
+    ViewMedicationsScreen:
+
+<LoginScreen>:
+    name: 'login'
+    name_input: name
+    password_input: password
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'center'
+        Image:
+            source: 'bg.png'
+            allow_stretch: True
+            keep_ratio: False
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.9, 0.5
+            padding: '20dp'
+            spacing: '10dp'
+            Label:
+                text: 'Name:'
+                color: [1,1,1,1]  # set text color to white
+            TextInput:
+                id: name
+                font_size: '20sp'  # adjust as needed
+                foreground_color: [0,0,0,1]  # set text input color to black
+            Label:
+                text: 'Password:'
+                color: [1,1,1,1]  # set text color to white
+            TextInput:
+                id: password
+                password: True
+                font_size: '20sp'  # adjust as needed
+                foreground_color: [0,0,0,1]  # set text input color to black
+            Button:
+                text: 'Login'
+                on_press: root.login()
+                background_color: (0.9, 0.9, 0.9, 1)
+                border: (1, 1, 1, 1)
+
+<HomeScreen>:
+    name: 'home'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '20dp'
+        spacing: '5dp'
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'bg.png'
+        Label:
+            text: root.greeting
+            font_size: '24sp'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: '100dp'
+            size_hint: 1, None
+            pos_hint: {'center_y': 0.5}
+            spacing: '10dp'
+            Button:
+                text: 'Add New Medicine'
+                size_hint_y: None
+                height: '48dp'
+                on_press: root.manager.current = 'add_medication'
+            Button:
+                text: 'View Medicines'
+                size_hint_y: None
+                height: '48dp'
+                on_press: root.manager.current = 'view_medications'
+
+
+            
+
+<AddMedicationScreen>:
+    name: 'add_medication'
+    name_input: med_name
+    time_input: med_time
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'bg.jpg'
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'center'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.9, 0.5
+            padding: '20dp'
+            spacing: '10dp'
+            Button:
+                text: 'Upload Prescription'
+                on_press: root.upload_prescription()
+                background_color: (1,1,1,1)  # set background color to light gray
+            Label:
+                text: 'Medicine Name:'
+                color: [0,0,0,1]  # set text input color to black
+
+            TextInput:
+                id: med_name
+                color: [0,0,0,1]  # set text input color to black
+
+            Label:
+                text: 'Time:'
+                color: [0,0,0,1]  # set text input color to black
+
+            TextInput:
+                id: med_time
+                color: [0,0,0,1]  # set text input color to black
+
+            Button:
+                text: 'Set Reminder'
+                on_press: root.add_medication()
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: '10dp'
+                Button:
+                    text: 'Back'
+                    on_press: root.manager.current = 'home'
+                Button:
+                    text: 'Home'
+                    on_press: root.manager.current = 'home'
+
+
+
+
+<ViewMedicationsScreen>:
+    name: 'view_medications'
+    on_enter: root.populate_medicine_list()  # populate the list when the screen is entered
+    BoxLayout:
+        orientation: 'vertical'
+        Image:
+            source: 'bg_crop.png'
+            allow_stretch: True
+            keep_ratio: False
+        BoxLayout:
+            size_hint_y: None
+            height: '30dp'
+            Label:
+                text: 'Medicine Name'
+            Label:
+                text: 'Time'
+        ScrollView:
+            size_hint_y: 0.8
+            do_scroll_x: False
+            BoxLayout:
+                orientation: 'vertical'
+                id: medicine_list
+                size_hint_y: None
+                height: self.minimum_height
+        BoxLayout:
+            size_hint_y: None
+            height: '50dp'
+            Button:
+                text: 'Back'
+                size_hint: 1, 1
+                on_press: root.manager.current = 'home'
